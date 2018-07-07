@@ -9,11 +9,11 @@ Um die Geräteunterstützung zu aktivieren, wird die aktuellste Version des [JP-
 ![wiring1](Images/wiring.png)
 
 ### WebUI
-#### Nur Druckanzeige
+#### (HB-UNI-Sen-PRESS) Nur Druckanzeige
 
 ![ccu1](Images/CCU_Bedienung_PRESS.png)
 
-#### Druckanzeige und zusätzlicher Schließerkontakt bei Über-/Unterschreiten der Hysterese
+#### (HB-UNI-Sen-PRESS-SC) Druckanzeige und zusätzlicher Schließerkontakt bei Über-/Unterschreiten der Hysterese
 
 ![ccu2](Images/CCU_Bedienung_PRESS-SC.png)
 
