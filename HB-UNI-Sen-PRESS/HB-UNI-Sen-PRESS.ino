@@ -172,6 +172,7 @@ class WeatherChannel : public Channel<Hal, UList1, EmptyList, List4, PEERS_PER_C
       if (number() == 4) displayLine4 = vStr;
       if (number() == 5) displayLine5 = vStr;
       if (number() == 6) displayLine6 = vStr;
+      printDisplay();
     }
 
     void printDisplay() {
