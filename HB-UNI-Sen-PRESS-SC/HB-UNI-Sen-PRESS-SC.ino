@@ -289,8 +289,8 @@ ConfigButton<UType> cfgBtn(sdev);
 
 void setup () {
   DINIT(57600, ASKSIN_PLUS_PLUS_IDENTIFIER);
-  printDeviceInfo();
   sdev.init(hal);
+      DDEVINFO(sdev);
   buttonISR(cfgBtn, CONFIG_BUTTON_PIN);
   sendISR(ISR_PIN);
   const uint8_t posmap[4] = {Position::State::PosA, Position::State::PosB, Position::State::PosA, Position::State::PosB};
@@ -312,19 +312,4 @@ void loop() {
     hal.activity.savePower<Idle<>>(hal);
   }
 }
-
-void printDeviceInfo() {
-  HMID ids;
-  sdev.getDeviceID(ids);
-
-  uint8_t ser[10];
-  sdev.getDeviceSerial(ser);
-
-  DPRINT(F("Device Info: "));
-  for (int i = 0; i < 10; i++) {
-    DPRINT(char(ser[i]));
-  }
-  DPRINT(" ("); DHEX(ids); DPRINTLN(")");
-}
-
 

@@ -283,8 +283,8 @@ void setup () {
     DPRINTLN(F("!!! ERROR: Anzahl SENSOR_PINS entspricht nicht der Anzahl SENSOR_EN_PINS"));
   } else {
 
-    printDeviceInfo();
     sdev.init(hal);
+    DDEVINFO(sdev);
     buttonISR(cfgBtn, CONFIG_BUTTON_PIN);
 #ifdef ISR_PIN
     sendISR(ISR_PIN);
@@ -308,20 +308,6 @@ void loop() {
 
     hal.activity.savePower<Idle<>>(hal);
   }
-}
-
-void printDeviceInfo() {
-  HMID ids;
-  sdev.getDeviceID(ids);
-
-  uint8_t ser[10];
-  sdev.getDeviceSerial(ser);
-
-  DPRINT(F("Device Info: "));
-  for (int i = 0; i < 10; i++) {
-    DPRINT(char(ser[i]));
-  }
-  DPRINT(" ("); DHEX(ids); DPRINTLN(")");
 }
 
 
