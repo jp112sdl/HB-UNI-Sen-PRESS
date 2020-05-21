@@ -14,7 +14,7 @@
 
 #include <Register.h>
 #include <MultiChannelDevice.h>
-#include <ThreeState.h>
+#include <ContactState.h>
 
 // Arduino Pro mini 8 Mhz
 // Arduino pin for the config button
@@ -137,7 +137,7 @@ class SCList1 : public RegList1<Reg1> {
     }
 };
 
-typedef ThreeStateChannel<Hal, UList0, SCList1, DefList4, PEERS_PER_SCCHANNEL> SCChannel;
+typedef TwoStateChannel<Hal, UList0, SCList1, DefList4, PEERS_PER_SCCHANNEL> SCChannel;
 
 class PressureChannel : public Channel<Hal, UList1, EmptyList, List4, PEERS_PER_CHANNEL, UList0>, public Alarm {
     uint16_t         pressure;
@@ -293,8 +293,7 @@ void setup () {
       DDEVINFO(sdev);
   buttonISR(cfgBtn, CONFIG_BUTTON_PIN);
   sendISR(ISR_PIN);
-  const uint8_t posmap[4] = {Position::State::PosA, Position::State::PosB, Position::State::PosA, Position::State::PosB};
-  sdev.scChannel().init(SC_PIN, SC_PIN, posmap);
+  sdev.scChannel().init(SC_PIN);
   sdev.initDone();
   sdev.pressureChannel().irq();
 }
@@ -312,4 +311,3 @@ void loop() {
     hal.activity.savePower<Idle<>>(hal);
   }
 }
-
