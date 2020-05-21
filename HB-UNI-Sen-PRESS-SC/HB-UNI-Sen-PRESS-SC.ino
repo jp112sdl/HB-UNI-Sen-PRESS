@@ -20,15 +20,15 @@
 // Arduino pin for the config button
 #define CONFIG_BUTTON_PIN 8
 // analoger Wert vom Drucksensor
-#define SENSOR_PIN        14
+#define SENSOR_PIN        A0
 // Status LED
 #define LED_PIN           4
 // Taster, um manuelle eine Messung auszulösen
 #define ISR_PIN           9
 // Ausgang Trigger SC-Kontakt ->
-#define SC_TRIGGER_PIN    6
+#define SC_TRIGGER_PIN    A4
 // -> Eingang Trigger SC-Kontakt
-#define SC_PIN            5
+#define SC_PIN            A5
 // Offen/Verschlossen (H/L) Pegel vertauschen
 #define SC_INVERT         false
 
