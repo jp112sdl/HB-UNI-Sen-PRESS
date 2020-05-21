@@ -11,9 +11,17 @@
 #include <EnableInterrupt.h>
 #include <AskSinPP.h>
 #include <LowPower.h>
-
+#include <Adafruit_SSD1306.h>
 #include <Register.h>
 #include <MultiChannelDevice.h>
+Adafruit_SSD1306 display(0);
+
+String displayLine1 = "";
+String displayLine2 = "";
+String displayLine3 = "";
+String displayLine4 = "";
+String displayLine5 = "";
+String displayLine6 = "";
 
 // Arduino Pro mini 8 Mhz
 // Arduino pin for the config button
@@ -157,6 +165,47 @@ class WeatherChannel : public Channel<Hal, UList1, EmptyList, List4, PEERS_PER_C
       pressure = _p > 0 ? _p : 0;
       DPRINT(F("+Pressure  (#")); DDEC(number()); DPRINT(F(") Analogwert: ")); DDECLN(sens_val);
       DPRINT(F("+Pressure  (#")); DDEC(number()); DPRINT(F(")       mBar: ")); DDECLN(pressure * 10);
+      String vStr = " " + String(pressure * 10) + " mBar";
+      if (number() == 1) displayLine1 = vStr;
+      if (number() == 2) displayLine2 = vStr;
+      if (number() == 3) displayLine3 = vStr;
+      if (number() == 4) displayLine4 = vStr;
+      if (number() == 5) displayLine5 = vStr;
+      if (number() == 6) displayLine6 = vStr;
+      printDisplay();
+    }
+
+    void printDisplay() {
+      for (int i = displayLine1.length(); i < 10; i++) {
+        displayLine1 += " ";
+      }
+      for (int i = displayLine2.length(); i < 10; i++) {
+        displayLine2 += " ";
+      }
+      for (int i = displayLine3.length(); i < 10; i++) {
+        displayLine3 += " ";
+      }
+      for (int i = displayLine4.length(); i < 10; i++) {
+        displayLine4 += " ";
+      }
+      for (int i = displayLine5.length(); i < 10; i++) {
+        displayLine5 += " ";
+      }
+      for (int i = displayLine6.length(); i < 10; i++) {
+        displayLine6 += " ";
+      }
+      display.clearDisplay();
+      display.setTextSize(1);
+      display.setCursor(0, 0);
+      display.setTextColor(BLACK, WHITE);
+      display.println(displayLine1);
+      display.println(displayLine2);
+      display.println(displayLine3);
+      display.setTextColor(WHITE, BLACK);
+      display.println(displayLine4);
+      display.println(displayLine5);
+      display.println(displayLine6);
+      display.display();
     }
 
     void irq () {
@@ -224,12 +273,18 @@ ConfigButton<UType> cfgBtn(sdev);
 
 void setup () {
   DINIT(57600, ASKSIN_PLUS_PLUS_IDENTIFIER);
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE, BLACK);
+  display.setCursor(0, 0);
+  display.display();
   if (sizeof(SENSOR_PINS) != sizeof(SENSOR_EN_PINS)) {
     DPRINTLN(F("!!! ERROR: Anzahl SENSOR_PINS entspricht nicht der Anzahl SENSOR_EN_PINS"));
   } else {
 
-    printDeviceInfo();
     sdev.init(hal);
+    DDEVINFO(sdev);
     buttonISR(cfgBtn, CONFIG_BUTTON_PIN);
 #ifdef ISR_PIN
     sendISR(ISR_PIN);
@@ -255,18 +310,5 @@ void loop() {
   }
 }
 
-void printDeviceInfo() {
-  HMID ids;
-  sdev.getDeviceID(ids);
-
-  uint8_t ser[10];
-  sdev.getDeviceSerial(ser);
-
-  DPRINT(F("Device Info: "));
-  for (int i = 0; i < 10; i++) {
-    DPRINT(char(ser[i]));
-  }
-  DPRINT(" ("); DHEX(ids); DPRINTLN(")");
-}
 
 
