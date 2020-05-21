@@ -7,6 +7,8 @@
 // define this to read the device id, serial and device type from bootloader section
 // #define USE_OTA_BOOTLOADER
 
+//#define USE_OLED
+
 #define EI_NOTEXTERNAL
 #include <EnableInterrupt.h>
 #include <AskSinPP.h>
@@ -14,6 +16,7 @@
 #include <Adafruit_SSD1306.h>
 #include <Register.h>
 #include <MultiChannelDevice.h>
+#ifdef USE_OLED
 Adafruit_SSD1306 display(0);
 
 String displayLine1 = "";
@@ -22,6 +25,7 @@ String displayLine3 = "";
 String displayLine4 = "";
 String displayLine5 = "";
 String displayLine6 = "";
+#endif
 
 // Arduino Pro mini 8 Mhz
 // Arduino pin for the config button
@@ -165,6 +169,7 @@ class WeatherChannel : public Channel<Hal, UList1, EmptyList, List4, PEERS_PER_C
       pressure = _p > 0 ? _p : 0;
       DPRINT(F("+Pressure  (#")); DDEC(number()); DPRINT(F(") Analogwert: ")); DDECLN(sens_val);
       DPRINT(F("+Pressure  (#")); DDEC(number()); DPRINT(F(")       mBar: ")); DDECLN(pressure * 10);
+#ifdef USE_OLED
       String vStr = " " + String(pressure * 10) + " mBar";
       if (number() == 1) displayLine1 = vStr;
       if (number() == 2) displayLine2 = vStr;
@@ -173,8 +178,10 @@ class WeatherChannel : public Channel<Hal, UList1, EmptyList, List4, PEERS_PER_C
       if (number() == 5) displayLine5 = vStr;
       if (number() == 6) displayLine6 = vStr;
       printDisplay();
+#endif
     }
 
+#ifdef USE_OLED
     void printDisplay() {
       for (int i = displayLine1.length(); i < 10; i++) {
         displayLine1 += " ";
@@ -207,6 +214,7 @@ class WeatherChannel : public Channel<Hal, UList1, EmptyList, List4, PEERS_PER_C
       display.println(displayLine6);
       display.display();
     }
+#endif
 
     void irq () {
       sysclock.cancel(*this);
@@ -273,12 +281,14 @@ ConfigButton<UType> cfgBtn(sdev);
 
 void setup () {
   DINIT(57600, ASKSIN_PLUS_PLUS_IDENTIFIER);
+#ifdef USE_OLED
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE, BLACK);
   display.setCursor(0, 0);
   display.display();
+#endif
   if (sizeof(SENSOR_PINS) != sizeof(SENSOR_EN_PINS)) {
     DPRINTLN(F("!!! ERROR: Anzahl SENSOR_PINS entspricht nicht der Anzahl SENSOR_EN_PINS"));
   } else {
@@ -309,6 +319,3 @@ void loop() {
     hal.activity.savePower<Idle<>>(hal);
   }
 }
-
-
-
