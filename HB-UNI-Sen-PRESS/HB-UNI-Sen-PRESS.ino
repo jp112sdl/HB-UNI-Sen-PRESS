@@ -13,10 +13,10 @@
 #include <EnableInterrupt.h>
 #include <AskSinPP.h>
 #include <LowPower.h>
-#include <Adafruit_SSD1306.h>
 #include <Register.h>
 #include <MultiChannelDevice.h>
 #ifdef USE_OLED
+#include <Adafruit_SSD1306.h>
 Adafruit_SSD1306 display(0);
 
 String displayLine1 = "";
