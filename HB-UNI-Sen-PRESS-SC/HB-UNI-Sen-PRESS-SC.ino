@@ -108,7 +108,7 @@ class UList1 : public RegList1<UReg1> {
     }
 
     bool PressureSensorType (uint8_t value)  const {
-      this->writeRegister(0x27, value & 0xff);
+      return this->writeRegister(0x27, value & 0xff);
     }
     uint8_t PressureSensorType () const {
       return this->readRegister(0x27, 0);
@@ -148,7 +148,7 @@ class PressureChannel : public Channel<Hal, UList1, EmptyList, List4, PEERS_PER_
     uint16_t         sc_state;
   public:
 
-    PressureChannel () : Channel(), Alarm(0), s_count(0), sc_state(TRG_OFF) {}
+    PressureChannel () : Channel(), Alarm(0), pressure(0), pressureLimit(0),pressureHysteresis(0), pressureSensorType(0), s_count(0), sc_state(TRG_OFF) {}
     virtual ~PressureChannel () {}
 
     void measure() {
@@ -160,7 +160,7 @@ class PressureChannel : public Channel<Hal, UList1, EmptyList, List4, PEERS_PER_
       }
       analogValue = analogValue / 10;
 
-      float sensor_factor;
+      float sensor_factor = 0;
       switch (pressureSensorType) {
         case MPA_1_2:
           sensor_factor = 0.75;
