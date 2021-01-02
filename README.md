@@ -2,7 +2,7 @@
 Um die Geräteunterstützung zu aktivieren, wird die aktuellste Version des [JP-HB-Devices Addon](https://github.com/jp112sdl/JP-HB-Devices-addon/releases/latest) benötigt!
 
 #### Verwendeter Drucksensor
-- 1.2MPa [Drucksensor](https://www.ebay.de/itm/152788257827)
+- 1.2MPa Drucksensor
   - es kann auch die 0.5MPa Version verwendet werden 
 
 #### Verdrahtung
